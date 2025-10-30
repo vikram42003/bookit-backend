@@ -1,11 +1,12 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
-const PORT: string | undefined = process.env.PORT;
+const PORT: string | undefined = process.env.PORT ?? "3003";
 const MONGODB_URL: string | undefined = process.env.MONGODB_URL;
 
-const config = {
+const env = {
   MONGODB_URL,
   PORT,
 };
 
-module.exports = config;
+export default env;
