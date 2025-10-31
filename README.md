@@ -4,7 +4,7 @@ This is the backend service for the **BookIt** web application, a platform where
 
 This project was built as an internship screening assignment for Highway Delite
 
-The frontend of the app is hosted at - https://bookit-backend-vke3.onrender.com \
+The frontend of the app is hosted at - https://bookit-experiences-and-slots.vercel.app/ \
 Github repo for the frontend - https://github.com/vikram42003/bookit-experiences-and-slots
 
 ## Features
