@@ -22,7 +22,7 @@ experiencesRouter.get("/:id", async (req, res) => {
       return res.status(404).json({ message: "Experience not found" });
     }
 
-    const timeSlots: ITimeSlot[] = await TimeSlot.find({ experience: experience.id }).sort({ dateTime: 1 });
+    const timeSlots: ITimeSlot[] = await TimeSlot.find({ experience: experience._id }).sort({ dateTime: 1 });
     res.json({ experience, timeSlots });
   } catch (e) {
     throw new Error(`Server error while fetching experience with id ${req.params.id}`);

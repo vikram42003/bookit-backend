@@ -1,16 +1,15 @@
 import express from "express";
-import { Booking } from "../models/booking";
-import { Experience } from "../models/experience";
+import { Booking, IBooking } from "../models/booking";
+import { Experience, IExperience } from "../models/experience";
 import { TimeSlot } from "../models/timeslot";
-import { PromoCode } from "../models/promoCode";
-import { BookingType, ExperienceType, PromoCodeType } from "../types/types";
+import { IPromoCode, PromoCode } from "../models/promoCode";
 
 const bookingsRouter = express.Router();
 
 // GET /api/bookings - Get all bookings
 bookingsRouter.get("/", async (req, res) => {
   try {
-    const experiences = (await Booking.find({})) as BookingType[];
+    const experiences: IBooking[] = await Booking.find({});
     res.json(experiences);
   } catch (e) {
     throw new Error("Server error while fetching bookings");
@@ -32,7 +31,7 @@ bookingsRouter.post("/", async (req, res) => {
     }
 
     // Get the experience to see the final price from the server
-    const experience = (await Experience.findById(req.body.experience)) as ExperienceType;
+    const experience: IExperience | null = await Experience.findById(req.body.experience);
     if (!experience) {
       return res.status(404).json({ error: "Not found", message: "Experience not found" });
     }
@@ -61,7 +60,7 @@ bookingsRouter.post("/", async (req, res) => {
 
     // Check and apply the promo code
     if (req.body.promoCode) {
-      const promoCode = (await PromoCode.findOne({ code: req.body.promoCode })) as PromoCodeType;
+      const promoCode: IPromoCode | null = await PromoCode.findOne({ code: req.body.promoCode });
       if (promoCode) {
         if (promoCode.type === "percentage") {
           finalPrice = finalPrice * (1 - promoCode.value / 100);
@@ -71,7 +70,7 @@ bookingsRouter.post("/", async (req, res) => {
       }
     }
 
-    const newBooking = await Booking.create({
+    const newBooking: IBooking = await Booking.create({
       ...req.body,
       finalPrice,
     });

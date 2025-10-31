@@ -1,6 +1,19 @@
-import mongoose, { Schema, InferSchemaType, HydratedDocument } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const experienceSchema: Schema = new Schema(
+export interface IExperience {
+  _id: string;
+  id: string;
+  name: string;
+  description: string;
+  images: string[];
+  price: number;
+  location: string;
+  about?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const experienceSchema = new Schema<IExperience>(
   {
     name: {
       type: String,
@@ -43,10 +56,5 @@ const experienceSchema: Schema = new Schema(
     },
   }
 );
-
-// Infer the base type from the schema
-type ExperienceSchemaType = InferSchemaType<typeof experienceSchema>;
-// This is the new, correct type for the Mongoose Document, replaces manual "IExperience extends Document" interface
-export type IExperience = HydratedDocument<ExperienceSchemaType>;
 
 export const Experience = mongoose.model<IExperience>("Experience", experienceSchema);

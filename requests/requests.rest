@@ -2,4 +2,12 @@
 GET http://localhost:3003/api/experiences
 
 ### Get a specific experience
-GET http://localhost:3003/api/experiences/690481739f6a68091eb33e88
+GET http://localhost:3003/api/experiences/690492113c7b148ed668ec06
+
+### Validate the promo code
+POST http://localhost:3003/api/promo/validate
+Content-Type: application/json
+
+{
+  "code": "SAVE10"
+}

@@ -1,6 +1,15 @@
-import mongoose, { Schema, InferSchemaType, HydratedDocument } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
-const timeSlotSchema: Schema = new Schema(
+export interface ITimeSlot {
+  experience: Types.ObjectId;
+  dateTime: Date;
+  capacity: number;
+  bookedCount: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const timeSlotSchema = new Schema<ITimeSlot>(
   {
     experience: {
       type: Schema.Types.ObjectId,
@@ -28,7 +37,7 @@ const timeSlotSchema: Schema = new Schema(
       virtuals: true,
       transform: (doc, ret: Record<string, unknown>) => {
         // Remove the redundant experience field from the final JSON
-        delete ret.experience; 
+        delete ret.experience;
         delete ret._id;
         delete ret.__v;
       },
@@ -42,11 +51,4 @@ const timeSlotSchema: Schema = new Schema(
 // Here 1 means ascending, -1 for descending
 timeSlotSchema.index({ experience: 1, dateTime: 1 });
 
-// Infer the base type from the schema
-type TimeSlotSchemaType = InferSchemaType<typeof timeSlotSchema>;
-
-// Create the Mongoose Document type
-export type ITimeSlot = HydratedDocument<TimeSlotSchemaType>;
-
-// Create the Mongoose Model
 export const TimeSlot = mongoose.model<ITimeSlot>("TimeSlot", timeSlotSchema);

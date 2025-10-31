@@ -1,6 +1,18 @@
-import mongoose, { Schema, InferSchemaType, HydratedDocument } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
-const bookingSchema: Schema = new Schema(
+export interface IBooking {
+  timeSlot: Types.ObjectId;
+  experience: Types.ObjectId;
+  userName: string;
+  userEmail: string;
+  quantity: number;
+  promoCode?: string;
+  finalPrice: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const bookingSchema = new Schema<IBooking>(
   {
     timeSlot: {
       type: Schema.Types.ObjectId,
@@ -50,9 +62,5 @@ const bookingSchema: Schema = new Schema(
     },
   }
 );
-
-type BookingSchemaType = InferSchemaType<typeof bookingSchema>;
-
-export type IBooking = HydratedDocument<BookingSchemaType>;
 
 export const Booking = mongoose.model<IBooking>("Booking", bookingSchema);
