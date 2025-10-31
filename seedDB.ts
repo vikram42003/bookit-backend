@@ -89,7 +89,9 @@ const seedData: CreateExperienceType[] = [
   {
     name: "Kayaking",
     description: "Curated small-group experience. Certified guide. Safety first with gear included.",
-    images: ["https://images.unsplash.com/photo-1594420310235-e66b7f7422f3"],
+    images: [
+      "https://blogger.googleusercontent.com/img/a/AVvXsEhnwMuSce7z9L4CkvWhjAUuZ6eZcIA83L7kMNI4FiN_wVkv_MT2kRuo4oPtNu4CeAli3hTSjvjrboakP59PL-XeNmEeqTrRAL1HolgFc4OvlA5yZPkgdZZE2s8T5ktblxWbUT5jxdS9oPLAc5xr6pUylASs6HlV1M9-PCctC5gJnxxjTJDa0no=w400-h300",
+    ],
     price: 999,
     location: "Udupi",
     about: "Scenic routes, trained guides, and safety briefing. Minimum age 10.",
@@ -97,7 +99,7 @@ const seedData: CreateExperienceType[] = [
   {
     name: "Nandi Hills Sunrise",
     description: "Curated small-group experience. Certified guide. Safety first with gear included.",
-    images: ["https://upload.wikimedia.org/wikipedia/commons/5/53/Nandi_Hills_Sunrise_View.jpg"],
+    images: ["https://www.zingbus.com/blog/wp-content/uploads/2025/07/Image-3-1-edited.jpg"],
     price: 899,
     location: "Bangalore",
     about: "Experience the stunning sunrise from the famous Nandi Hills. A perfect getaway.",
@@ -105,7 +107,7 @@ const seedData: CreateExperienceType[] = [
   {
     name: "Coffee Trail",
     description: "Curated small-group experience. Certified guide. Safety first with gear included.",
-    images: ["https://images.unsplash.com/photo-1506362802963-f43b4f5d3865"],
+    images: ["https://tuskertrailcoorg.com/wp-content/uploads/2022/04/DJI_0079.jpg"],
     price: 1299,
     location: "Coorg",
     about: "Walk through lush, misty coffee plantations in Coorg. Learn about the coffee-making process.",
@@ -113,7 +115,9 @@ const seedData: CreateExperienceType[] = [
   {
     name: "Kayaking",
     description: "Curated small-group experience. Certified guide. Safety first with gear included.",
-    images: ["https://images.unsplash.com/photo-1560756700-0604b16e511c"],
+    images: [
+      "https://th-i.thgim.com/public/news/national/karnataka/opvcc5/article38023648.ece/alternates/LANDSCAPE_1200/kayaking",
+    ],
     price: 999,
     location: "Udupi, Karnataka",
     about: "Scenic routes, trained guides, and safety briefing. Minimum age 10.",
@@ -121,7 +125,7 @@ const seedData: CreateExperienceType[] = [
   {
     name: "Nandi Hills Sunrise",
     description: "Curated small-group experience. Certified guide. Safety first with gear included.",
-    images: ["https://images.unsplash.com/photo-1542273917-03f0f062e143"],
+    images: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmoe97UkPmvo6YcZ1-Ib__40Ml-e4Z5MnoTw&s"],
     price: 899,
     location: "Bangalore",
     about: "Experience the stunning sunrise from the famous Nandi Hills. A perfect getaway.",
@@ -129,7 +133,7 @@ const seedData: CreateExperienceType[] = [
   {
     name: "Boat Cruise",
     description: "Curated small-group experience. Certified guide. Safety first with gear included.",
-    images: ["https://images.unsplash.com/photo-1601633916021-3310f8fb37c7"],
+    images: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpWpbfsVbtbDKWwG03H03mvLZr0FAfxPStpg&s"],
     price: 999,
     location: "Sunderban",
     about: "Explore the dense mangroves and wildlife of the Sunderbans on this guided boat tour.",
@@ -137,7 +141,9 @@ const seedData: CreateExperienceType[] = [
   {
     name: "Bungee Jumping",
     description: "Curated small-group experience. Certified guide. Safety first with gear included.",
-    images: ["https://images.unsplash.com/photo-1604921256333-d7d3d75079f5"],
+    images: [
+      "https://imgcld.yatra.com/ytimages/image/upload/v1517480802/AdvNation/ANN_ACT45/ann_top_Bungee_Jumping_8wkReb.jpg",
+    ],
     price: 999,
     location: "Manali",
     about: "Feel the adrenaline rush with a safe and thrilling bungee jump in the mountains of Manali.",
@@ -145,7 +151,9 @@ const seedData: CreateExperienceType[] = [
   {
     name: "Coffee Trail",
     description: "Curated small-group experience. Certified guide. Safety first with gear included.",
-    images: ["https://images.unsplash.com/photo-1447752875215-b2761acb3c5d"],
+    images: [
+      "https://www.keralatourism.org/images/service-providers/photos/property-3499-Exterior-10665-20180829063812.jpg",
+    ],
     price: 1299,
     location: "Coorg",
     about: "Walk through lush, misty coffee plantations in Coorg. Learn about the coffee-making process.",
