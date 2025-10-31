@@ -32,8 +32,8 @@ const promoCodeSchema: Schema = new Schema(
   }
 );
 
-type promoCodeSchamType = InferSchemaType<typeof promoCodeSchema>;
+type PromoCodeSchemaType = InferSchemaType<typeof promoCodeSchema>;
 
-export type IPromoCode = HydratedDocument<promoCodeSchamType>;
+export type IPromoCode = HydratedDocument<PromoCodeSchemaType>;
 
-export const PromoCode = mongoose.model<IPromoCode>("PromoCodes", promoCodeSchema);
+export const PromoCode = mongoose.model<IPromoCode>("PromoCode", promoCodeSchema);

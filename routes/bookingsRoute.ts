@@ -1,13 +1,16 @@
 import express from "express";
-import { Booking, IBooking } from "../models/booking";
+import { Booking } from "../models/booking";
+import { Experience } from "../models/experience";
 import { TimeSlot } from "../models/timeslot";
+import { PromoCode } from "../models/promoCode";
+import { BookingType, ExperienceType, PromoCodeType } from "../types/types";
 
 const bookingsRouter = express.Router();
 
 // GET /api/bookings - Get all bookings
 bookingsRouter.get("/", async (req, res) => {
   try {
-    const experiences: IBooking[] = await Booking.find({});
+    const experiences = (await Booking.find({})) as BookingType[];
     res.json(experiences);
   } catch (e) {
     throw new Error("Server error while fetching bookings");
@@ -17,21 +20,21 @@ bookingsRouter.get("/", async (req, res) => {
 // POST /api/bookings - Book the experience
 bookingsRouter.post("/", async (req, res) => {
   try {
-    if (
-      !req.body.timeSlot ||
-      !req.body.experience ||
-      !req.body.userName ||
-      !req.body.userEmail ||
-      !req.body.finalPrice
-    ) {
+    if (!req.body.timeSlot || !req.body.experience || !req.body.userName || !req.body.userEmail) {
       return res.status(400).json({
         error: "Bad request",
-        message: "Some fields are missing. Required fields - timeSlot, experience, userName, userEmail, finalPrice",
+        message: "Some fields are missing. Required fields - timeSlot, experience, userName, userEmail",
       });
     }
 
     if (!req.body.quantity || req.body.quantity < 1) {
       return res.status(400).json({ error: "Bad request", message: "Quantity must be at least 1" });
+    }
+
+    // Get the experience to see the final price from the server
+    const experience = (await Experience.findById(req.body.experience)) as ExperienceType;
+    if (!experience) {
+      return res.status(404).json({ error: "Not found", message: "Experience not found" });
     }
 
     // We need to ensure that the server doesnt book more than capacity AND the booking operation is atomic to prevent any race conditions
@@ -54,7 +57,25 @@ bookingsRouter.post("/", async (req, res) => {
       });
     }
 
-    const newBooking: IBooking = await Booking.create(req.body);
+    let finalPrice = experience.price * req.body.quantity;
+
+    // Check and apply the promo code
+    if (req.body.promoCode) {
+      const promoCode = (await PromoCode.findOne({ code: req.body.promoCode })) as PromoCodeType;
+      if (promoCode) {
+        if (promoCode.type === "percentage") {
+          finalPrice = finalPrice * (1 - promoCode.value / 100);
+        } else if (promoCode.type === "flat") {
+          finalPrice = Math.max(0, finalPrice - promoCode.value);
+        }
+      }
+    }
+
+    const newBooking = await Booking.create({
+      ...req.body,
+      finalPrice,
+    });
+
     res.status(201).json(newBooking);
   } catch (e) {
     throw new Error("Server error while booking experience");
