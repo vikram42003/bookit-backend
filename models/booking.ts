@@ -1,15 +1,6 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, InferSchemaType, HydratedDocument } from "mongoose";
 
-export interface IBooking extends Document {
-  timeSlot: Schema.Types.ObjectId;
-  experience: Schema.Types.ObjectId;
-  userName: string;
-  userEmail: string;
-  promoCode?: string;
-  finalPrice: number;
-}
-
-const bookingSchema: Schema = new Schema<IBooking>(
+const bookingSchema: Schema = new Schema(
   {
     timeSlot: {
       type: Schema.Types.ObjectId,
@@ -17,7 +8,7 @@ const bookingSchema: Schema = new Schema<IBooking>(
       required: true,
     },
     experience: {
-      // Denormalized for easier queries (e.g., "show all bookings for this user")
+      // Bring experiences to top level for easier queries (so that we can handle stuff like "show all bookings for this user")
       type: Schema.Types.ObjectId,
       ref: "Experience",
       required: true,
@@ -32,6 +23,11 @@ const bookingSchema: Schema = new Schema<IBooking>(
       required: true,
       trim: true,
       lowercase: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      min: 1,
     },
     promoCode: {
       type: String,
@@ -54,5 +50,9 @@ const bookingSchema: Schema = new Schema<IBooking>(
     },
   }
 );
+
+type BookingSchemaType = InferSchemaType<typeof bookingSchema>;
+
+export type IBooking = HydratedDocument<BookingSchemaType>;
 
 export const Booking = mongoose.model<IBooking>("Booking", bookingSchema);

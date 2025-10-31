@@ -1,13 +1,89 @@
-import { CreateExperienceType, CreateTimeSlotType } from "./types/types";
+import { CreateExperienceType, CreateTimeSlotType, PromoCodeType } from "./types/types";
 import { connectDB, closeDB } from "./config/mongodb";
+
 import { Experience } from "./models/experience";
 import { TimeSlot } from "./models/timeslot";
 import { Booking } from "./models/booking";
+import { PromoCode } from "./models/promoCode";
 
 // For generating random number of bookings/capacity
 const getRandom = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
+const seedDatabase = async () => {
+  try {
+    console.log("Seeding database...");
+
+    console.log("Deleting old data...");
+    await TimeSlot.deleteMany({});
+    await Experience.deleteMany({});
+    await Booking.deleteMany({});
+    await PromoCode.deleteMany({});
+
+    console.log("Inserting experiences...");
+    const createdExperiences = await Experience.insertMany(seedData);
+    console.log(`Inserted ${createdExperiences.length} experiences.`);
+
+    // Define the dynamic time slot generation
+    const allTimeSlots: CreateTimeSlotType[] = [];
+
+    const days = ["2025-11-01", "2025-11-02", "2025-11-03"];
+    const times = ["T09:00:00.000+05:30", "T11:00:00.000+05:30", "T13:00:00.000+05:30", "T15:00:00.000+05:30"];
+
+    // Loop through every created experience
+    for (const exp of createdExperiences) {
+      for (const day of days) {
+        for (const time of times) {
+          // Create random capacity (1-10) and bookedCount
+          const newCapacity = getRandom(1, 10);
+          const newBookedCount = getRandom(0, newCapacity); // Booked <= Capacity
+
+          allTimeSlots.push({
+            experience: exp.id as string,
+            dateTime: `${day}${time}`,
+            capacity: newCapacity,
+            bookedCount: newBookedCount,
+          });
+        }
+      }
+    }
+
+    console.log("Inserting time slots...");
+    await TimeSlot.insertMany(allTimeSlots);
+
+    console.log("Inserting promo codes...");
+    await PromoCode.insertMany(promoCodes);
+
+    console.log("Database seeded successfully!");
+  } catch (error) {
+    console.error("Error seeding database:", error);
+  } finally {
+    closeDB();
+  }
+};
+
+connectDB().then(() => {
+  seedDatabase();
+});
+
+const promoCodes: PromoCodeType[] = [
+  {
+    code: "SAVE10",
+    type: "percentage",
+    value: 10,
+  },
+  {
+    code: "FLAT100",
+    type: "flat",
+    value: 100,
+  },
+  {
+    code: "WINTER20",
+    type: "percentage",
+    value: 20,
+  },
+];
 
 const seedData: CreateExperienceType[] = [
   {
@@ -75,55 +151,3 @@ const seedData: CreateExperienceType[] = [
     about: "Walk through lush, misty coffee plantations in Coorg. Learn about the coffee-making process.",
   },
 ];
-
-const seedDatabase = async () => {
-  try {
-    console.log("Seeding database...");
-
-    console.log("Deleting old data...");
-    await TimeSlot.deleteMany({});
-    await Experience.deleteMany({});
-    await Booking.deleteMany({});
-
-    console.log("Inserting experiences...");
-    const createdExperiences = await Experience.insertMany(seedData);
-    console.log(`Inserted ${createdExperiences.length} experiences.`);
-
-    // Define the dynamic time slot generation
-    const allTimeSlots: CreateTimeSlotType[] = [];
-
-    const days = ["2025-11-01", "2025-11-02", "2025-11-03"];
-    const times = ["T09:00:00.000+05:30", "T11:00:00.000+05:30", "T13:00:00.000+05:30", "T15:00:00.000+05:30"];
-
-    // Loop through every created experience
-    for (const exp of createdExperiences) {
-      for (const day of days) {
-        for (const time of times) {
-          // Create random capacity (1-10) and bookedCount
-          const newCapacity = getRandom(1, 10);
-          const newBookedCount = getRandom(0, newCapacity); // Booked <= Capacity
-
-          allTimeSlots.push({
-            experience: exp.id as string,
-            dateTime: `${day}${time}`,
-            capacity: newCapacity,
-            bookedCount: newBookedCount,
-          });
-        }
-      }
-    }
-
-    console.log(`Inserting time slots...`);
-    await TimeSlot.insertMany(allTimeSlots);
-
-    console.log("Database seeded successfully!");
-  } catch (error) {
-    console.error("Error seeding database:", error);
-  } finally {
-    closeDB();
-  }
-};
-
-connectDB().then(() => {
-  seedDatabase();
-});

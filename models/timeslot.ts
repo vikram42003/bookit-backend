@@ -1,11 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
-
-export interface ITimeSlot extends Document {
-  experience: Schema.Types.ObjectId;
-  dateTime: Date;
-  capacity: number;
-  bookedCount: number;
-}
+import mongoose, { Schema, InferSchemaType, HydratedDocument } from "mongoose";
 
 const timeSlotSchema: Schema = new Schema(
   {
@@ -27,13 +20,6 @@ const timeSlotSchema: Schema = new Schema(
       type: Number,
       required: true,
       default: 0,
-      // validate: {
-      //   // Ensures you can't overbook
-      //   validator: function (this: ITimeSlot, value: number) {
-      //     return value <= this.capacity;
-      //   },
-      //   message: "Booked count cannot exceed capacity",
-      // },
     },
   },
   {
@@ -41,6 +27,8 @@ const timeSlotSchema: Schema = new Schema(
     toJSON: {
       virtuals: true,
       transform: (doc, ret: Record<string, unknown>) => {
+        // Remove the redundant experience field from the final JSON
+        delete ret.experience; 
         delete ret._id;
         delete ret.__v;
       },
@@ -51,6 +39,14 @@ const timeSlotSchema: Schema = new Schema(
 // Add an index for performance
 // My idea of timeslot model offers atomicity and protection against double booking but may make things slow, that is why we index it
 // We basically tell mongodb that sort the timeslot schema by experience, and then by dateTime, so when we search, the stuff we need is grouped together
+// Here 1 means ascending, -1 for descending
 timeSlotSchema.index({ experience: 1, dateTime: 1 });
 
+// Infer the base type from the schema
+type TimeSlotSchemaType = InferSchemaType<typeof timeSlotSchema>;
+
+// Create the Mongoose Document type
+export type ITimeSlot = HydratedDocument<TimeSlotSchemaType>;
+
+// Create the Mongoose Model
 export const TimeSlot = mongoose.model<ITimeSlot>("TimeSlot", timeSlotSchema);
