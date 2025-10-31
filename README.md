@@ -72,6 +72,7 @@ I am aware that generally routes should be divided into services/contollers fold
 
 - **`/models`**: Defines the Mongoose schemas for our database collections (Experiences, TimeSlots, etc.). These models are the interface for interacting with the MongoDB database.
 - **`/types`**: Centralizes all custom TypeScript types used across the application for better type safety and code clarity.
+- **`/utils`**: This is where the utility functions, loggers, custom middlewares are put.
 - **`app.ts`**: It is where we attach all the routers to the app, add the middlewares and error handlers, and prepare the express app to start listening.
 - **`index.ts`**: The application's entry point. It sets up the Express server, connects to the database, and starts listening for requests.
 - **`seedDB.ts`**: A utility script to populate the database. As seen in the code, it clears existing collections and inserts fresh data for experiences, time slots, and promo codes, which is incredibly useful for development and testing.
