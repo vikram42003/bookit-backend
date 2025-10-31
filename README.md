@@ -4,6 +4,9 @@ This is the backend service for the **BookIt** web application, a platform where
 
 This project was built as an internship screening assignment for Highway Delite
 
+The frontend of the app is hosted at - https://bookit-backend-vke3.onrender.com \
+Github repo for the frontend - https://github.com/vikram42003/bookit-experiences-and-slots
+
 ## Features
 
 - **Experience Management**: CRUD operations for travel experiences.
@@ -75,17 +78,17 @@ I am aware that generally routes should be divided into services/contollers fold
 
 ## API Endpoints
 
-The following are the primary endpoints provided by this API.
+The following are the primary endpoints provided by this API. Refer to the code for the relevant schema or type for more details.
 
 #### `GET /api/experiences`
 
 - **Description**: Retrieves a list of all available experiences.
-- **Response**: `200 OK`
+- **Response**: `200 OK` with an array of experiences.
 
 #### `GET /api/experiences/:id`
 
 - **Description**: Retrieves detailed information for a single experience, including its available time slots.
-- **Response**: `200 OK`
+- **Response**: `200 OK` with the details of a single experience.
 
 #### `GET /api/bookings`
 
@@ -95,7 +98,7 @@ The following are the primary endpoints provided by this API.
 #### `POST /api/bookings/:id`
 
 - **Description**: Fetches details about a single booking with the specified id
-- **Response**: `201 Created` with the booking's details.
+- **Response**: `201 Created` with the details of a specific booking.
 
 #### `POST /api/bookings`
 
