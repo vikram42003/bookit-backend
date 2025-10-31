@@ -9,8 +9,21 @@ const bookingsRouter = express.Router();
 // GET /api/bookings - Get all bookings
 bookingsRouter.get("/", async (req, res) => {
   try {
-    const experiences: IBooking[] = await Booking.find({});
-    res.json(experiences);
+    const bookings: IBooking[] = await Booking.find({});
+    res.json(bookings);
+  } catch (e) {
+    throw new Error("Server error while fetching bookings");
+  }
+});
+
+// GET /api/bookings/:id - Get a specific booking
+bookingsRouter.get("/:id", async (req, res) => {
+  try {
+    const booking: IBooking | null = await Booking.findById(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ message: "Experience not found" });
+    }
+    res.json(booking);
   } catch (e) {
     throw new Error("Server error while fetching bookings");
   }

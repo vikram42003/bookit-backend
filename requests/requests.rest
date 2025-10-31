@@ -11,3 +11,6 @@ Content-Type: application/json
 {
   "code": "SAVE10"
 }
+
+### Get all bookings
+GET http://localhost:3003/api/bookings
